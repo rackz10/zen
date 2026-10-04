@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Zen — organiza tus tareas diarias, controla tus finanzas por quincena y guarda tus notas. Estilo iOS cristal líquido, con modo claro y oscuro." />
+  <title>Zen · Tareas, Finanzas y Notas</title>
+
+  <!-- Aplicación instalable (PWA) -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#EFEFF4" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Zen" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
+
+  <!-- Aplica el tema antes de pintar nada (evita el destello blanco en modo oscuro) -->
+  <script>
+    try {
+      var t = localStorage.getItem('zen:theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <!-- Fondos difusos que dan vida al efecto "cristal líquido" -->
+  <div class="ambient" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
+  <div class="app-shell">
+    <!-- ================= CABECERA ================= -->
+    <header class="top-bar glass">
+      <div class="top-bar-inner">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 100 100" width="34" height="34">
+              <defs>
+                <linearGradient id="zenGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#7C5CFF" />
+                  <stop offset="100%" stop-color="#38C8FF" />
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="100" height="100" rx="26" fill="url(#zenGrad)" />
+              <path d="M32 32 H68 L32 68 H68" fill="none" stroke="#fff" stroke-width="9"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <div class="brand-text">
+            <h1>Zen</h1>
+            <p id="today-label">&nbsp;</p>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <button id="theme-btn" class="round-btn" type="button" aria-label="Cambiar entre modo claro y modo oscuro">
+            <svg class="ic ic-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.2" />
+              <path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7" />
+            </svg>
+            <svg class="ic ic-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= CONTENIDO ================= -->
+    <main class="content">
+      <!-- ---------- TAREAS ---------- -->
+      <section id="view-tasks" class="view is-active" data-view="tasks" aria-labelledby="tab-tasks" role="tabpanel">
+        <div class="glass panel progress-panel">
+          <div class="progress-head">
+            <div>
+              <p class="eyebrow">Progreso</p>
+              <p class="progress-title"><strong id="tasks-done">0</strong> de <span id="tasks-total">0</span> completadas</p>
+            </div>
+            <span id="tasks-percent" class="badge">0%</span>
+          </div>
+          <div class="progress-track">
+            <span id="tasks-bar" class="progress-fill"></span>
+          </div>
+        </div>
+
+        <div class="segmented" id="tasks-filter" role="tablist" aria-label="Filtrar tareas">
+          <span class="seg-indicator" aria-hidden="true"></span>
+          <button class="seg-btn is-active" type="button" data-filter="all">Todas</button>
+          <button class="seg-btn" type="button" data-filter="pending">Pendientes</button>
+          <button class="seg-btn" type="button" data-filter="done">Completadas</button>
+        </div>
+
+        <ul id="tasks-list" class="rows"></ul>
+
+        <div id="tasks-empty" class="empty-state" hidden>
+          <span class="empty-emoji" aria-hidden="true">🌿</span>
+          <p class="empty-title">Todo en calma</p>
+          <p class="empty-text">No hay tareas en esta vista. Pulsa <strong>+</strong> para añadir una.</p>
+        </div>
+      </section>
+
+      <!-- ---------- FINANZAS ---------- -->
+      <section id="view-finance" class="view" data-view="finance" aria-labelledby="tab-finance" role="tabpanel">
+        <div class="glass panel quincena-panel">
+          <button id="quincena-prev" class="round-btn sm" type="button" aria-label="Quincena anterior">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>
+          </button>
+          <div class="quincena-info">
+            <p class="eyebrow" id="quincena-kicker">Quincena actual</p>
+            <p class="quincena-title" id="quincena-title">Quincena</p>
+            <p class="quincena-range" id="quincena-range"></p>
+          </div>
+          <button id="quincena-next" class="round-btn sm" type="button" aria-label="Quincena siguiente">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5" /></svg>
+          </button>
+        </div>
+
+        <div class="stat-grid">
+          <div class="glass stat">
+            <span class="stat-label"><i class="dot dot-green"></i>Ingresos</span>
+            <span id="f-income" class="stat-value positive">$0.00</span>
+          </div>
+          <div class="glass stat">
+            <span class="stat-label"><i class="dot dot-red"></i>Gastos</span>
+            <span id="f-expense" class="stat-value negative">$0.00</span>
+          </div>
+        </div>
+
+        <div class="glass panel balance-panel">
+          <p class="eyebrow">Disponible en la quincena</p>
+          <p id="f-balance" class="balance-value">$0.00</p>
+          <p id="f-hint" class="hint">&nbsp;</p>
+        </div>
+
+        <h2 class="section-title">Movimientos</h2>
+        <ul id="tx-list" class="rows"></ul>
+
+        <div id="tx-empty" class="empty-state" hidden>
+          <span class="empty-emoji" aria-hidden="true">🪙</span>
+          <p class="empty-title">Sin movimientos</p>
+          <p class="empty-text">Registra tu primer ingreso o gasto con el botón <strong>+</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ---------- NOTAS ---------- -->
+      <section id="view-notes" class="view" data-view="notes" aria-labelledby="tab-notes" role="tabpanel">
+        <div id="notes-grid" class="notes-grid"></div>
+
+        <div id="notes-empty" class="empty-state" hidden>
+          <span class="empty-emoji" aria-hidden="true">✏️</span>
+          <p class="empty-title">Aún no hay notas</p>
+          <p class="empty-text">Escribe un pensamiento, una idea o algo que quieras tener a mano.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Botón flotante (según la sección activa) -->
+    <button id="fab" class="fab" type="button" aria-label="Añadir">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+    </button>
+
+    <!-- ================= PESTAÑAS INFERIORES ================= -->
+    <nav class="tab-bar glass" role="tablist" aria-label="Secciones de la app">
+      <button id="tab-tasks" class="tab is-active" type="button" role="tab" data-view="tasks" aria-selected="true">
+        <span class="tab-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 6.5l2 2 3-3.5M4 13l2 2 3-3.5M4 19.5l2 2 3-3.5M12.5 6.5h7.5M12.5 13h7.5M12.5 19.5h7.5" /></svg>
+        </span>
+        <span class="tab-label">Tareas</span>
+      </button>
+      <button id="tab-finance" class="tab" type="button" role="tab" data-view="finance" aria-selected="false">
+        <span class="tab-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3.2" /><path d="M3 10h18M16.5 14.5h1.8" /></svg>
+        </span>
+        <span class="tab-label">Finanzas</span>
+      </button>
+      <button id="tab-notes" class="tab" type="button" role="tab" data-view="notes" aria-selected="false">
+        <span class="tab-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="4.5" y="3" width="15" height="18" rx="3.2" /><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4" /></svg>
+        </span>
+        <span class="tab-label">Notas</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ================= HOJA INFERIOR (formularios) ================= -->
+  <div id="backdrop" class="backdrop" hidden></div>
+  <div id="sheet" class="sheet glass" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 id="sheet-title">Nuevo</h2>
+      <button id="sheet-cancel" class="text-btn" type="button">Cancelar</button>
+    </div>
+    <div id="sheet-body" class="sheet-body"></div>
+  </div>
+
+  <!-- ================= EDITOR DE NOTAS ================= -->
+  <div id="editor" class="editor" role="dialog" aria-modal="true" aria-label="Editor de nota" hidden>
+    <header class="editor-top">
+      <div class="editor-top-inner">
+        <button id="editor-back" class="text-btn accent" type="button">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>
+          Notas
+        </button>
+        <span id="editor-status" class="editor-status" aria-live="polite"></span>
+        <button id="editor-delete" class="icon-btn danger" type="button" aria-label="Eliminar nota">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4.5 6.5h15M9.5 6.5V4.8a1.3 1.3 0 0 1 1.3-1.3h2.4a1.3 1.3 0 0 1 1.3 1.3V6.5M6.5 6.5l.9 12.2a1.8 1.8 0 0 0 1.8 1.7h5.6a1.8 1.8 0 0 0 1.8-1.7l.9-12.2M10 10.5v6M14 10.5v6" />
+          </svg>
+        </button>
+      </div>
+    </header>
+    <div class="editor-scroll">
+      <input id="editor-title" class="editor-title" type="text" placeholder="Título" autocomplete="off" />
+      <textarea id="editor-body" class="editor-body" placeholder="Escribe tu pensamiento, idea o recordatorio..." spellcheck="true"></textarea>
+      <p id="editor-meta" class="editor-meta"></p>
+    </div>
+  </div>
+
+  <!-- ================= AVISO "AÑADIR A PANTALLA DE INICIO" ================= -->
+  <div id="install-hint" class="install-hint glass" hidden>
+    <span class="hint-emoji" aria-hidden="true">📲</span>
+    <p>Instala Zen en tu iPhone: toca <strong>Compartir</strong> <span class="share-ic" aria-hidden="true"></span> y elige <strong>«Agregar a pantalla de inicio»</strong>.</p>
+    <button id="install-hint-close" class="text-btn" type="button">Entendido</button>
+  </div>
+
+  <!-- ================= AVISO FLOTANTE (deshacer) ================= -->
+  <div id="toast" class="toast glass" role="status" hidden>
+    <span id="toast-text"></span>
+    <button id="toast-action" class="toast-action" type="button">Deshacer</button>
+  </div>
+
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>

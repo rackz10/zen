@@ -1,0 +1,32 @@
+{
+  "name": "Zen — Tareas, Finanzas y Notas",
+  "short_name": "Zen",
+  "description": "Organiza tus tareas diarias, controla tus finanzas por quincena y guarda tus notas. Con estilo iOS cristal líquido y modo oscuro.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EFEFF4",
+  "theme_color": "#EFEFF4",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
