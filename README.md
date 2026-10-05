@@ -1,103 +1,137 @@
+<div align="center">
+
 # 🌿 Zen
 
-**Zen** es una aplicación web (PWA) para organizar tu día en un solo lugar:
+**Tu día, en calma.**
 
-- ✅ **Tareas** — crea tu lista diaria y márcalas como completadas, con barra de progreso.
-- 💰 **Finanzas** — registra tus ingresos y gastos, y descubre **con cuánto dinero cuentas cada quincena** (y cuánto puedes gastar al día).
-- 📝 **Notas** — escribe tus pensamientos, ideas o recordatorios que quieras tener a mano.
+Tareas, finanzas por quincena y notas — en una sola app con el estilo de iOS,
+modo claro y modo oscuro, y sin depender de internet.
 
-Con estilo **iOS "cristal líquido"**, interfaz en **blanco (modo claro)** y **modo oscuro**. Tus datos se guardan **en tu dispositivo**, sin servidores ni cuentas.
+[![Licencia MIT](https://img.shields.io/badge/licencia-MIT-8B5CF6?style=flat-square)](LICENSE)
+[![PWA](https://img.shields.io/badge/aplicación-PWA-38C8FF?style=flat-square&logo=pwa&logo=white)](#-instálala-en-tu-iphone)
+[![Sin datos en la nube](https://img.shields.io/badge/tus%20datos-100%25%20locales-34C759?style=flat-square)](#-tus-datos-son-tuyos)
+[![Tecnología](https://img.shields.io/badge/hecho%20con-HTML%20·%20CSS%20·%20JS-7C5CFF?style=flat-square)](#-para-modificarla)
 
----
+[**▶ Probar Zen en línea**](https://TU-USUARIO.github.io/zen/) ·
+[**⬇️ Descargar el código**](#️-descargar)
 
-## 📱 Cómo instalarla en tu iPhone
-
-1. Abre la web de tu repositorio en **Safari** (una vez publicada con GitHub Pages).
-2. Toca el botón **Compartir** (el cuadrado con la flecha ▲).
-3. Elige **«Agregar a pantalla de inicio»**.
-4. Ponle el nombre que quieras (Zen) y toca **Añadir**.
-
-Ya aparecerá como una app independiente, a pantalla completa y con tus propios iconos.
-Funciona **sin internet** gracias al *service worker*: todo lo que guardes se queda en el móvil.
+</div>
 
 ---
 
-## 🖥️ Cómo probarla en tu PC
+## ✨ ¿Qué hace Zen?
 
-No necesita compilación ni dependencias. Cualquiera de estas opciones:
+### ✅ Tareas diarias
+Escribe lo que tienes que hacer y **márcalo con un toque** cuando lo termines.
+Una barra de progreso te muestra cómo va el día, con filtros de
+*Pendientes* y *Completadas*. Si te equivocas, todo se puede **deshacer**.
 
-- **Doble clic** en `index.html` (se abre en el navegador), o
-- Con [Visual Studio Code](https://code.visualstudio.com/) + extensión *Live Server*, o
-- `npx serve .` en la carpeta del proyecto (si tienes Node.js).
+### 💰 Finanzas por quincena
+Registra tus **ingresos** y tus **gastos** con categoría y fecha, y Zen calcula
+al instante **con cuánto dinero cuentas cada quincena**. Además te dice cuánto
+puedes gastar al día para llegar bien a fin de quincena. Puedes navegar por
+quincenas pasadas para revisar tu historial.
 
-> Durante el desarrollo con `file://` no se registra el *service worker* (es normal). En GitHub Pages (HTTPS) sí funcionará.
+> *«Te quedan 12 días · puedes gastar ≈ $958.33 al día»* — así se ve la pista diaria.
 
----
+### 📝 Notas rápidas
+Un lugar para tus pensamientos, ideas, listas y recordatorios que quieras
+tener a la mano. Se guardan solos mientras escribes, en una cuadrícula tipo
+iOS que se acomoda sola.
 
-## 🚀 Cómo subirlo a GitHub (tu primer repositorio)
+### 🌗 Modo claro y modo oscuro
+Interfaz blanca y luminosa de día, tranquila y oscura de noche. Zen recuerda
+tu elección (y si no eliges, sigue la configuración de tu teléfono).
 
-### Opción A — Desde la web de GitHub (la más rápida, sin instalar nada)
-
-1. Crea una cuenta en [github.com](https://github.com) (si aún no la tienes).
-2. Pulsa el botón verde **«+»** arriba a la derecha → **New repository**.
-3. Nombre: `zen` (o el que prefieras) → deja **Public** → **Create repository**.
-4. En la página del repositorio, pulsa **uploading an existing file** (o *Add file → Upload files*).
-5. **Arrastra toda la carpeta `Zen`** con todo su contenido → **Commit changes**.
-
-### Opción B — Con Git desde la terminal
-
-```bash
-cd "C:\Users\david\Documents\Default Project\Zen"
-git init
-git add .
-git commit -m "Primera versión de Zen"
-git branch -M main
-git remote add origin https://github.com/TU-USUARIO/zen.git
-git push -u origin main
-```
-
-> 💡 En tu PC **no tienes Git instalado** todavía. Puedes instalarlo desde [git-scm.com](https://git-scm.com/download/win) o usar la aplicación gráfica [GitHub Desktop](https://desktop.github.com/), que es muy amigable para empezar.
-
-### Activar GitHub Pages (web pública gratis)
-
-1. En tu repositorio → pestaña **Settings** → **Pages**.
-2. En *Source*: rama **main** y carpeta **/ (root)** → **Save**.
-3. En unos segundos tu app estará en:
-   `https://TU-USUARIO.github.io/zen/`
-
-Cada vez que hagas un *push*, GitHub Pages se actualiza solo. ✨
+### 📴 Funciona sin internet
+Zen se instala como una **aplicación real** en tu teléfono: se abre a pantalla
+completa desde tu pantalla de inicio, sin barra de navegador, y todo funciona
+**sin conexión** desde el primer momento.
 
 ---
 
-## 🗂️ Estructura del proyecto
+## 📸 Capturas
 
-```
-Zen/
-├── index.html              → Estructura de la app
-├── manifest.webmanifest    → La hace instalable (PWA)
-├── sw.js                   → Funcionamiento sin internet
-├── assets/
-│   ├── css/styles.css      → Diseño "cristal líquido" + modo oscuro
-│   └── js/app.js           → Tareas, finanzas, notas y temas
-├── icons/                  → Iconos (192, 512, Apple touch y favicon)
-├── make-icons.ps1          → Regenera los iconos si cambias el diseño
-└── README.md
-```
+| Modo claro · Tareas |
+|:---:|
+| ![Tareas en modo claro con barra de progreso](screenshots/tareas.png) |
 
----
+| Modo oscuro · Finanzas |
+|:---:|
+| ![Finanzas en modo oscuro con ingresos, gastos y disponible de la quincena](screenshots/finanzas.png) |
 
-## ✏️ Cómo personalizarla
-
-- **Moneda**: en `assets/js/app.js` busca la función `money()` y cambia `'$'` por `'€'`, `'MX$'`, etc.
-- **Categorías de finanzas**: en `app.js` están los arreglos `EXPENSE_CATS` e `INCOME_CATS` (emoji + nombre).
-- **Colores**: los gradientes y acentos están en `assets/css/styles.css` dentro de `:root` (modo claro) y `[data-theme="dark"]` (modo oscuro).
-- **Actualizar la app para los usuarios**: sube el valor de `VERSION` en `sw.js` (por ejemplo `zen-v2`) para que los móviles descarguen la nueva versión.
-
-## 🔒 Datos y privacidad
-
-Todo se guarda en el `localStorage` del navegador, **solo en tu dispositivo**. No hay base de datos ni envío de información a terceros.
-Si borres los datos del sitio en Safari, se borrarán también las tareas, finanzas y notas: puedes copiarlas antes desde la app.
+| Modo oscuro · Notas |
+|:---:|
+| ![Notas en modo oscuro con tres tarjetas](screenshots/notas.png) |
 
 ---
 
-Hecho con HTML, CSS y JavaScript puros — sin frameworks. 💜
+## 📲 Instálala en tu iPhone
+
+Zen no está en la App Store: se instala directamente desde Safari en 30 segundos.
+
+1. Abre el enlace de **[Probar Zen en línea](https://TU-USUARIO.github.io/zen/)** en **Safari**.
+2. Toca el botón de **Compartir** (el cuadrado con la flecha ▲).
+3. Elige **«Agregar a pantalla de inicio»** → ponle el nombre que quieras → **Añadir**.
+
+<details>
+<summary><b>En Android y en la computadora</b></summary>
+
+- **Android (Chrome):** menú ⋮ → *«Instalar aplicación»* o *«Añadir a pantalla de inicio»*.
+- **Computadora (Chrome / Edge):** icono de instalar 🔨 junto a la barra de direcciones.
+- O simplemente **guardarla como favorito** y usarla en el navegador.
+</details>
+
+---
+
+## ⬇️ Descargar
+
+- **En línea:** [https://TU-USUARIO.github.io/zen/](https://TU-USUARIO.github.io/zen/)
+- **El código:** botón verde **Code → Download ZIP**, descomprime y abre `index.html`
+  con doble clic. ¡No necesita instalación ni compilar nada!
+
+---
+
+## 🔒 Tus datos son tuyos
+
+Zen **no tiene servidores, cuentas ni rastreadores**. Todo lo que escribes —
+tareas, finanzas y notas — se guarda **en el almacenamiento de tu propio dispositivo**.
+Nada viaja por internet.
+
+> ⚠️ Si borras los datos del sitio en tu navegador, se borran también las notas:
+> copia antes lo que quieras conservar.
+
+---
+
+## ❓ Preguntas frecuentes
+
+| Pregunta | Respuesta |
+|---|---|
+| ¿Cuesta algo? | No, Zen es gratis y de código abierto. |
+| ¿Necesito crear una cuenta? | Nunca. Abres y empiezas a usarla. |
+| ¿Funciona en Android? | Sí, en cualquier teléfono o computadora. |
+| ¿Y si no tengo internet? | Todo sigue funcionando: las apps instaladas guardan Zen en tu equipo. |
+| ¿Puedo cambiar la moneda o los colores? | Sí, es HTML/CSS/JS puro: [mira abajo](#-para-modificarla). |
+
+---
+
+## 🛠️ Para modificarla
+
+No usa frameworks ni dependencias: solo `index.html`, `assets/css/styles.css`
+y `assets/js/app.js`. Clona o descarga el código, edita y recarga.
+
+- **Moneda:** en `app.js`, cambia `'$'` dentro de la función `money()`.
+- **Categorías:** arreglos `EXPENSE_CATS` e `INCOME_CATS` en `app.js`.
+- **Colores:** variables en `styles.css` (`:root` = claro, `[data-theme="dark"]` = oscuro).
+
+Más detalles en la [guía de desarrollo](DESARROLLO.md).
+
+---
+
+## Licencia
+
+Distribuido bajo la licencia [MIT](LICENSE). Úsala, modifícala y compártela. 💜
+
+<div align="center">
+Hecho con HTML, CSS y JavaScript puros · <b>Zen</b> 🌿
+</div>
